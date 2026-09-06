@@ -1,0 +1,6 @@
+com\BGNexora\ImagesUpload\ImagesUploadApplication.class
+com\BGNexora\ImagesUpload\Services\ImpServices.class
+com\BGNexora\ImagesUpload\Services\Services.class
+com\BGNexora\ImagesUpload\Controller\TheVaultController.class
+com\BGNexora\ImagesUpload\Repository\TheVaultRepo.class
+com\BGNexora\ImagesUpload\Entites\TheVaultEntity.class

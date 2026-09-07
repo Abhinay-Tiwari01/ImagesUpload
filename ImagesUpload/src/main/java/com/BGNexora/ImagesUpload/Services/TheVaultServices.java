@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -78,4 +80,21 @@ public class TheVaultServices  {
                 theVaultEntity.getUpdateDate()
         );
     }
+
+    public List<TheVaultResponse> getAllVaultResponses(){
+        return theVaultRepo.findAll().stream().map(
+                theVaultEntity ->new TheVaultResponse(
+                        theVaultEntity.getId(),
+                        theVaultEntity.getSubject(),
+                        theVaultEntity.getMessage(),
+                        theVaultEntity.getFileName(),
+                        "/api/thevault/download/" + theVaultEntity.getId(),
+                        theVaultEntity.getFileType(),
+                        theVaultEntity.getFileSize(),
+                        theVaultEntity.getCreatedDate(),
+                        theVaultEntity.getUpdateDate()
+                )
+        ).toList() ;
+    }
+
 }

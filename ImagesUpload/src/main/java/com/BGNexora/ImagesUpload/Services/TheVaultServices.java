@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.UUID;
 
 @Service
 public class TheVaultServices  {
@@ -21,7 +22,7 @@ public class TheVaultServices  {
 
     public TheVaultResponse createVault(TheVaultCreateRequest createRequest) throws IOException {
 
-        if(createRequest.getSubject() == null | createRequest.getSubject().isEmpty()){
+        if(createRequest.getSubject() == null || createRequest.getSubject().isEmpty()){
             throw new IOException("Subject Cannot be Empty");
         }
         String fileName = null;
@@ -29,11 +30,17 @@ public class TheVaultServices  {
         String fileType = null;
         Long fileSize = null;
 
-        if(createRequest.getFile() != null && createRequest.getFile().isEmpty()){
-            fileName = createRequest.getFile().getOriginalFilename();
+        if(createRequest.getFile() != null && !createRequest.getFile().isEmpty()){
+
+            String originalFileName =createRequest.getFile().getOriginalFilename();
+            String randomFileName = UUID.randomUUID().toString();
+
+            fileName = randomFileName+"."+originalFileName;
+
             fileData = createRequest.getFile().getBytes();
             fileType = createRequest.getFile().getContentType();
             fileSize = createRequest.getFile().getSize();
+
             if("DATABASE".equalsIgnoreCase(storageType)){
                 System.out.println("File Stored in Database");
             }
@@ -56,17 +63,19 @@ public class TheVaultServices  {
         theVault.setFileData(fileData);
         theVault.setFileType(fileType);
         theVault.setFileSize(fileSize);
+
         TheVaultEntity theVaultEntity = theVaultRepo.save(theVault);
+
         return new TheVaultResponse(
-                theVault.getId(),
-                theVault.getSubject(),
-                theVault.getMessage(),
-                theVault.getFileName(),
-                "/api/thevault/download/" + theVault.getId(),
-                theVault.getFileType(),
-                theVault.getFileSize(),
-                theVault.getCreatedDate(),
-                theVault.getUpdateDate()
+                theVaultEntity.getId(),
+                theVaultEntity.getSubject(),
+                theVaultEntity.getMessage(),
+                theVaultEntity.getFileName(),
+                "/api/thevault/download/" + theVaultEntity.getId(),
+                theVaultEntity.getFileType(),
+                theVaultEntity.getFileSize(),
+                theVaultEntity.getCreatedDate(),
+                theVaultEntity.getUpdateDate()
         );
     }
 }

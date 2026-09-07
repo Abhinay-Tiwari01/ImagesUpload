@@ -18,7 +18,7 @@ import java.io.IOException;
 public class TheVaultController {
 
     @Autowired
-    private TheVaultServices theVaultServices;
+    TheVaultServices theVaultServices;
 
     @PostMapping("/create")
     public ResponseEntity<TheVaultResponse> createVault(@ModelAttribute TheVaultCreateRequest createRequest){

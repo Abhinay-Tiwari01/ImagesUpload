@@ -11,7 +11,8 @@ public class TheVaultEntity {
     private int id;
     @Column(nullable = false)
     private String subject;
-    @Column(columnDefinition = "LONGTEXT")
+    @Lob
+    @Column(name = "message")
     private String message;
     @Column(name = "file_name")
     private String fileName;
@@ -21,7 +22,7 @@ public class TheVaultEntity {
     private long fileSize;
 
     @Lob
-    @Column(name = "file_data", columnDefinition = "LONGBLOB")
+    @Column(name = "file_data")
     private byte[] fileData;
 
 //    For local file storage approach
